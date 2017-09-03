@@ -57,9 +57,7 @@ HAI 1.2
         NO WAI
           BTW Check if it's a NUMBAR, we don't handle NUMBARs
           BTW This approach will only account for the first 5dp, good enough for this though :) 
-          numbar R PRODUKT OF numbar AN 10 
-          numbar R QUOSHUNT OF numbar AN numbr
-          DIFFRINT 10 AN numbar, O RLY?
+          DIFFRINT numbr AN numbar, O RLY?
             YA RLY
               rply R FAIL
             NO WAI
