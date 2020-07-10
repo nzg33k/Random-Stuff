@@ -2,87 +2,103 @@
 import random
 
 
-def who_won_round(player_one_choice, player_two_choice):
+def get_options(version='normal'):
+    if version == 'normal':
+        o_options = {
+            'r': {
+                'name': "rock",
+                'beats': {
+                    's': "rock crushes scissors"
+                }
+            },
+            'p': {
+                'name': "paper",
+                'beats': {
+                    'r': "paper covers rock"
+                }
+            },
+            's': {
+                'name': "scissors",
+                'beats': {
+                    'p': "scissors cut paper",
+                }
+            },
+            'prompt': "please enter r for rock, s for scissors, or p for paper: "
+        }
+    else:
+        o_options = {
+            'r': {
+                'name': "rock",
+                'beats': {
+                    's': "(and as it always has) Rock crushes Scissors",
+                    'l': "rock crushes lizard",
+                }
+            },
+            'p': {
+                'name': "paper",
+                'beats': {
+                    'r': "paper covers rock",
+                    'v': "paper disproves spock"
+                }
+            },
+            's': {
+                'name': "scissors",
+                'beats': {
+                    'p': "scissors cut paper",
+                    'l': "scissors decapitate lizard"
+                }
+            },
+            'l': {
+                'name': "lizard",
+                'beats': {
+                    'p': "lizard eats paper",
+                    'v': "lizard poisons Spock"
+                }
+            },
+            'v': {
+                'name': "spock",
+                'beats': {
+                    's': "Spock smashes scissors",
+                    'r': "Spock vapourises rock"
+                }
+            },
+            'prompt': "please enter r for rock, s for scissors, p for paper, l for lizard, or v for (Vulcan) Spock: "
+        }
+    return o_options
+
+
+def who_won_round(player_one_choice, player_two_choice, wwr_options, print_reason=True):
     """Figure out who won"""
-    winner = ""
-    if player_one_choice == 'r':
-        if player_two_choice == 'r':
-            winner = 'no one'
-        elif player_two_choice == 's':
-            winner = 'player'
-        elif player_two_choice == 'p':
-            winner = 'computer'
-        elif player_two_choice == 'l':
-            winner = 'player'
-        elif player_two_choice == 'v':
-            winner = 'computer'
-    elif player_one_choice == 's':
-        if player_two_choice == 'r':
-            winner = 'computer'
-        elif player_two_choice == 's':
-            winner = 'no one'
-        elif player_two_choice == 'p':
-            winner = 'player'
-        elif player_two_choice == 'l':
-            winner = 'player'
-        elif player_two_choice == 'v':
-            winner = 'computer'
-    elif player_one_choice == 'p':
-        if player_two_choice == 'r':
-            winner = 'player'
-        elif player_two_choice == 's':
-            winner = 'computer'
-        elif player_two_choice == 'p':
-            winner = 'no one'
-        elif player_two_choice == 'l':
-            winner = 'computer'
-        elif player_two_choice == 'v':
-            winner = 'player'
-    elif player_one_choice == 'l':
-        if player_two_choice == 'r':
-            winner = 'computer'
-        elif player_two_choice == 's':
-            winner = 'player'
-        elif player_two_choice == 'p':
-            winner = 'computer'
-        elif player_two_choice == 'l':
-            winner = 'no one'
-        elif player_two_choice == 'v':
-            winner = 'player'
-    elif player_one_choice == 'v':
-        if player_two_choice == 'r':
-            winner = 'player'
-        elif player_two_choice == 's':
-            winner = 'player'
-        elif player_two_choice == 'p':
-            winner = 'computer'
-        elif player_two_choice == 'l':
-            winner = 'computer'
-        elif player_two_choice == 'v':
-            winner = 'no one'
+    if player_one_choice == player_two_choice:
+        winner = 'no one'
+        reason = "You both picked " + wwr_options[player_one_choice]['name']
+    elif player_two_choice in wwr_options[player_one_choice]['beats']:
+        winner = 'player'
+        reason = wwr_options[player_one_choice]['beats'][player_two_choice]
+    else:
+        winner = 'computer'
+        reason = wwr_options[player_two_choice]['beats'][player_one_choice]
+    if print_reason:
+        print(reason)
     return winner
 
 
-def computer_turn(options):
+def computer_turn(ct_options):
     """Random choice for the computer player"""
-    turn = random.choices(options)
-    print("Computer played " + turn[0])
-    return turn[0][0]
+    turn = str(random.choices(list(ct_options.keys()))[0])
+    return turn
 
 
-def play_round(scores, options):
+def play_round(scores, pr_options, prompt):
     """Play a round"""
     player_one_turn = ''
-    if len(options) == 3:
-        prompt = "please enter r for rock, s for scissors, or p for paper: "
-    elif len(options) == 5:
-        prompt = "please enter r for rock, s for scissors, p for paper, l for lizard, or v for (Vulcan) Spock: "
-    while player_one_turn not in options:
-        player_one_turn = input(prompt)
-        if player_one_turn not in options:
+    while player_one_turn not in pr_options:
+        player_one_turn = str(input(prompt)[0])
+        if player_one_turn not in pr_options:
             print("Sorry, " + prompt)
-    player_two_turn = computer_turn(options)
-    winner = who_won_round(player_one_turn, player_two_turn)
+    player_two_turn = computer_turn(pr_options)
+    print("Computer played " + player_two_turn)
+    winner = who_won_round(player_one_turn, player_two_turn, pr_options)
     scores[winner] += 1
     print(winner + " won this round")
     return scores
@@ -92,9 +108,11 @@ def game():
     """The actual game!"""
     which_game = input("Do you want to play the expanded version?  y/n: ")
     if which_game.lower() == 'y':
-        options = ['r', 'p', 's', 'l', 'v']
+        options = get_options('bbt')
     else:
-        options = ['r', 'p', 's']
+        options = get_options('normal')
+    prompt = options['prompt']
+    options.popitem()
     scores = {
         'player': 0,
         'computer': 0,
@@ -102,7 +120,8 @@ def game():
     }
     play_again = True
     while play_again:
-        scores = play_round(scores, options)
+        # noinspection PyTypeChecker
+        scores = play_round(scores, options, prompt)
         answer = input("type y to play again: ")
         if answer[0].lower() == 'y':
             play_again = True
