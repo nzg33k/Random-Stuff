@@ -56,17 +56,6 @@ def get_all_word_sets(letter_bank, letter_counts, repeats=True,
     return return_value
 
 
-def get_and_return_valid_combinations(letter_bank, letter_counts, repeats=True,
-                                      sort_results=False, sentences_not_words=True):
-    """Wrapper that gets all the sentences yields the sentences"""
-    guesses = get_all_word_sets(letter_bank, letter_counts, repeats,
-                                sort_results, sentences_not_words)
-    sentences = []
-    for sentence in make_sentences(guesses):
-        sentences.append(sentence)
-    return sentences
-
-
 def print_sentences(letter_bank, letter_counts, sort_results=False,
                     repeats=True, sentences_not_words=True):
     """Wrapper for get_and_return_valid_combinations that prints"""
