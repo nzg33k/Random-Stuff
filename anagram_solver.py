@@ -2,7 +2,9 @@
 
 from itertools import product, permutations
 from sys import argv
+import time
 import enchant
+
 
 OUTPUT_FILE_NAME = "anagram_solver_output.txt"
 
@@ -45,8 +47,12 @@ def get_all_word_sets(letter_bank, letter_counts, repeats=True,
                       sort_results=False, sentences_not_words=False):
     """Get all the word options for each word"""
     guesses = []
+    letter_count_words = {}
     for letter_count in letter_counts:
-        guesses.append(get_all_words(letter_bank, letter_count, repeats, sort_results))
+        if not letter_count in letter_count_words:
+            letter_count_words[letter_count] = get_all_words(letter_bank,
+                                                             letter_count, repeats, sort_results)
+        guesses.append(letter_count_words[letter_count])
     if sentences_not_words:
         return_value = get_sentences(guesses)
     else:
@@ -63,6 +69,15 @@ def print_sentences(letter_bank, letter_counts, sort_results=False,
                                   sort_results, sentences_not_words=sentences_not_words)
     for sentence in generator:
         print(sentence)
+
+
+def time_sentences(letter_bank, letter_counts, sort_results=False,
+                    repeats=True, sentences_not_words=True):
+    """Wrapper for get_and_return_valid_combinations that just times"""
+    start_time = time.time()
+    get_all_word_sets(letter_bank, letter_counts, repeats,
+                                  sort_results, sentences_not_words=sentences_not_words)
+    print(time.time()-start_time)
 
 
 def file_sentences(letter_bank, letter_counts, sentences_not_words=True,
@@ -84,6 +99,8 @@ if __name__ == "__main__":
         SENTENCES_NOT_WORDS = "w" not in FLAGS
         if "f" in FLAGS:
             FUNCTION_TO_USE = file_sentences
+        elif "t" in FLAGS:
+            FUNCTION_TO_USE = time_sentences
         else:
             FUNCTION_TO_USE = print_sentences
         LETTER_BANK = argv[2]
@@ -98,6 +115,7 @@ if __name__ == "__main__":
     else:
         print(f"""Flags:
   [f]ile output rather than print (into {OUTPUT_FILE_NAME})
+  [t]ime the process rather than outputting anywhere
   [r]epeat
   [s]ort
   [w]ords rather than senences
