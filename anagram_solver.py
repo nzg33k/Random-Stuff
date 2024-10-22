@@ -54,12 +54,10 @@ def get_all_word_sets(letter_bank, letter_counts, repeats=True,
                                                              letter_count, repeats, sort_results)
         guesses.append(letter_count_words[letter_count])
     if sentences_not_words:
-        return_value = get_sentences(guesses)
+        yield from make_sentences(guesses)
     else:
-        return_value = []
-        for guess in guesses:
-            return_value.extend(guess)
-    return return_value
+        for letter_count, words in letter_count_words.items():
+            yield from words
 
 
 def print_sentences(letter_bank, letter_counts, sort_results=False,
@@ -75,9 +73,10 @@ def time_sentences(letter_bank, letter_counts, sort_results=False,
                     repeats=True, sentences_not_words=True):
     """Wrapper for get_and_return_valid_combinations that just times"""
     start_time = time.time()
-    get_all_word_sets(letter_bank, letter_counts, repeats,
-                                  sort_results, sentences_not_words=sentences_not_words)
-    print(time.time()-start_time)
+    response_count = sum(1 for response in get_all_word_sets(letter_bank, letter_counts,
+        repeats, sort_results, sentences_not_words=sentences_not_words))
+    time_taken = time.time()-start_time
+    print(f"Ran for {time_taken}s and found {response_count} results")
 
 
 def file_sentences(letter_bank, letter_counts, sentences_not_words=True,
