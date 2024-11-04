@@ -22,7 +22,7 @@
         </style>
         <script type="text/javascript">
             function process_time(add_time) {
-                op=document.getElementById('result');
+                output=document.getElementById('result');
                 start_time=document.getElementById('start_time').value;
                 start_time=start_time.split(':');
                 hours=Number(start_time[0]);
@@ -35,7 +35,7 @@
                 hours = (hours > 23) ? hours - 24 : hours;
                 add_hour_zero = (hours < 10) ? "0" : "";
                 add_minute_zero = (minutes < 10) ? "0" : "";
-                op.innerHTML=add_hour_zero + hours + ":" + add_minute_zero + minutes;
+                output.innerHTML=add_hour_zero + hours + ":" + add_minute_zero + minutes;
             }
         </script>
     </header>
