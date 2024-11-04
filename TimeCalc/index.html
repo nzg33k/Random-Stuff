@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <!-- Written by NZGeek.com for my beloved -->
+    <header>
+        <title>Time Calculator</title>
+        <script type="text/javascript">
+            function process_time(add_time) {
+                op=document.getElementById('result');
+                start_time=document.getElementById('start_time').value;
+                start_time=start_time.split(':');
+                start_time[0]=Number(start_time[0]);
+                start_time[1]=Number(start_time[1]);
+                //add_time=Number(document.getElementById('add_time').value);
+                start_time[1]+=add_time;
+                while(start_time[1] > 59) {
+                    start_time[1]-=60;
+                    start_time[0]++;
+                }
+                add_minute_zero = "";
+                if (start_time[1] < 10) {
+                    add_minute_zero += "0";
+                }
+                add_hour_zero = "";
+                if (start_time[0] < 10) {
+                    add_hour_zero += "0";
+                }
+                op.innerHTML=add_hour_zero + start_time[0] + ":" + add_minute_zero + start_time[1];
+            }
+        </script>
+    </header>
+    <body bgcolor="#444444">
+        <form action="" name="time_form" method="get" onsubmit="process_time()">
+            <input type="time" id="start_time" value="13:30" step="300"/>
+            <br />
+            <script type="text/javascript">
+                for (let i=15;i<160;i+=15) {
+                    document.writeln('<input type="button" value="' + i +'" title="' + i + '" id="add_time" onclick="process_time(' + i + ')"/>');
+                }
+            </script>
+        </form>
+        <div id="result"></div>
+    </body>
+</html>
