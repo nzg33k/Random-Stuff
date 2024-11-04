@@ -24,23 +24,17 @@
                 op=document.getElementById('result');
                 start_time=document.getElementById('start_time').value;
                 start_time=start_time.split(':');
-                start_time[0]=Number(start_time[0]);
-                start_time[1]=Number(start_time[1]);
-                //add_time=Number(document.getElementById('add_time').value);
-                start_time[1]+=add_time;
-                while(start_time[1] > 59) {
-                    start_time[1]-=60;
-                    start_time[0]++;
+                hours=Number(start_time[0]);
+                minutes=Number(start_time[1]);
+                minutes+=add_time;
+                while(minutes > 59) {
+                    minutes-=60;
+                    hours++;
                 }
-                add_minute_zero = "";
-                if (start_time[1] < 10) {
-                    add_minute_zero += "0";
-                }
-                add_hour_zero = "";
-                if (start_time[0] < 10) {
-                    add_hour_zero += "0";
-                }
-                op.innerHTML=add_hour_zero + start_time[0] + ":" + add_minute_zero + start_time[1];
+                hours = (hours > 23) ? hours - 24 : hours;
+                add_hour_zero = (hours < 10) ? "0" : "";
+                add_minute_zero = (minutes < 10) ? "0" : "";
+                op.innerHTML=add_hour_zero + hours + ":" + add_minute_zero + minutes;
             }
         </script>
     </header>
@@ -50,7 +44,14 @@
             <br />
             <script type="text/javascript">
                 for (let i=15;i<160;i+=15) {
-                    document.writeln('<input type="button" value="' + i +'" title="' + i + '" id="add_time" onclick="process_time(' + i + ')"/>');
+                    hours = 0;
+                    minutes = i;
+                    while (minutes > 59) {
+                        hours++;
+                        minutes-=60;
+                    }
+                    minutes = (minutes==0) ? "00" : minutes;
+                    document.writeln('<input type="button" value="' + hours + ":" + minutes +'" title="' + i + 'm" id="add_time" onclick="process_time(' + i + ')"/>');
                 }
             </script>
         </form>
