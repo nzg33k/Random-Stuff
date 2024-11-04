@@ -3,6 +3,22 @@
     <!-- Written by NZGeek.com for my beloved -->
     <header>
         <title>Time Calculator</title>
+        <style>
+            #result {
+                background-color:white;
+                width: 50%;
+                font-size: 4em;
+                position: relative;
+                text-align: center;
+                margin: 2%;
+                color: firebrick;
+                border-color: #444444;
+                border-radius: 1em;
+            }
+            body {
+                background-color: #444444;
+            }
+        </style>
         <script type="text/javascript">
             function process_time(add_time) {
                 op=document.getElementById('result');
@@ -28,7 +44,7 @@
             }
         </script>
     </header>
-    <body bgcolor="#444444">
+    <body>
         <form action="" name="time_form" method="get" onsubmit="process_time()">
             <input type="time" id="start_time" value="13:30" step="300"/>
             <br />
