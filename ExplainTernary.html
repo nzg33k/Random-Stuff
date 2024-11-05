@@ -1,0 +1,23 @@
+<style>
+    body {
+        font-size: 4em;
+        color:magenta;
+    }
+</style>
+<script>
+    y=2561456161613;
+    //Ternary operator
+    x = (y%2==0) ? 'even' : 'odd';
+    document.writeln(x);
+
+    document.writeln('<br />');
+    //Could be re-written:
+    //The Math.floor() method rounds a number DOWN to the nearest integer.
+    if ((y-(Math.floor(y/2)*2))==0) {
+        x='even';
+    }
+    else {
+        x='odd';
+    }
+    document.writeln(x);
+</script>

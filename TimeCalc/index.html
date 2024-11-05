@@ -34,7 +34,7 @@
                 }
                 hours = (hours > 23) ? hours - 24 : hours;
                 add_hour_zero = (hours < 10) ? "0" : "";
-                add_minute_zero = (minutes < 10) ? "0" : "";
+                add_minute_zero = (minutes < 10) ? "0" : ""; 
                 output.innerHTML=add_hour_zero + hours + ":" + add_minute_zero + minutes;
             }
         </script>
