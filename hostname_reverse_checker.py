@@ -19,6 +19,6 @@ with open(OUTFILE,'w', encoding='utf-8') as results:
                     short_hostname = row[3].split(".")[0]
                     if short_reverse_hostname != short_hostname:
                         results.write(f"reverse result {short_reverse_hostname}" +
-                                      " is not the same as the zone hostname {short_hostname}\n")
+                                      f" is not the same as the zone hostname {short_hostname}\n")
         csvfile.close()
     results.close()
