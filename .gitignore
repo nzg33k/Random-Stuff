@@ -1,3 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/
+__pycache__/
 anagram_solver_output.txt
+zone.csv
+reverse_checks_results.txt
