@@ -13,7 +13,7 @@ with open(OUTFILE,'w', encoding='utf-8') as results:
                 try:
                     reverse_hostname = socket.gethostbyaddr(row[1])
                 except socket.herror:
-                    results.write(f"{row[3]}'s ip {row[1]} did not resolve")
+                    results.write(f"{row[3]}'s ip {row[1]} did not resolve\n")
                 else:
                     short_reverse_hostname = reverse_hostname[0].split(".")[0]
                     short_hostname = row[3].split(".")[0]
